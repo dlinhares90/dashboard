@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CS Dashboard — Arthur Dias Implantodontista</title>
+  <style>
+    /* =============================================
+       RESET E BASE
+       Zeramos margens/paddings padrão do navegador
+       e definimos a fonte principal do projeto.
+    ============================================= */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+    }
+
+    /* =============================================
+       HERO — barra do topo com identidade visual
+    ============================================= */
+    .hero {
+      background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 60%, #3182ce 100%);
+      color: white;
+      padding: 56px 24px 48px;
+      text-align: center;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 99px;
+      padding: 5px 16px;
+      font-size: 0.78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      font-size: 1rem;
+      opacity: 0.85;
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+    .hero .pills {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .hero .pill {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 99px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+    }
+
+    /* =============================================
+       CONTAINER — centraliza o conteúdo principal
+    ============================================= */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    /* =============================================
+       SECTION TITLE — título de cada seção
+    ============================================= */
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #718096;
+      margin-bottom: 16px;
+      margin-top: 40px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    /* =============================================
+       CARD PRINCIPAL — link para o relatório
+    ============================================= */
+    .main-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+      border: 2px solid #ebf8ff;
+      margin-bottom: 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .main-card:hover {
+      box-shadow: 0 8px 32px rgba(49,130,206,0.15);
+      transform: translateY(-2px);
+    }
+    .main-card .icon {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+    .main-card h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+    .main-card p  { font-size: 0.88rem; color: #718096; line-height: 1.6; margin-bottom: 14px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #2b6cb0;
+      color: white;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .btn:hover { background: #1a365d; }
+    .btn-outline {
+      background: transparent;
+      color: #2b6cb0;
+      border: 1.5px solid #2b6cb0;
+    }
+    .btn-outline:hover { background: #ebf8ff; }
+
+    /* =============================================
+       GRID DE RECURSOS — cards menores
+    ============================================= */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .resource-card {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .resource-card .icon-sm {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+    .resource-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .resource-card p  { font-size: 0.82rem; color: #718096; line-height: 1.5; margin-bottom: 12px; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 99px;
+    }
+    .tag.local   { background: #fefcbf; color: #975a16; }
+    .tag.static  { background: #c6f6d5; color: #276749; }
+    .tag.private { background: #fed7d7; color: #9b2c2c; }
+    .tag.script  { background: #e9d8fd; color: #6b46c1; }
+
+    /* =============================================
+       COMO FUNCIONA — linha do tempo visual
+    ============================================= */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px; top: 8px; bottom: 0;
+      width: 2px;
+      background: #e2e8f0;
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -24px; top: 5px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid #3182ce;
+      background: white;
+    }
+    .tl-item h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 3px; }
+    .tl-item p  { font-size: 0.82rem; color: #718096; line-height: 1.5; }
+    .tl-item code {
+      background: #edf2f7;
+      padding: 1px 7px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: #2d3748;
+    }
+
+    /* =============================================
+       GLOSSÁRIO — termos técnicos explicados
+    ============================================= */
+    .glossario-item {
+      padding: 14px 0;
+      border-bottom: 1px solid #f0f4f8;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .glossario-item:last-child { border-bottom: none; }
+    .glossario-item .termo {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #2b6cb0;
+      background: #ebf8ff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .glossario-item p { font-size: 0.83rem; color: #4a5568; line-height: 1.55; }
+
+    /* =============================================
+       METAS RÁPIDAS — painel de referência
+    ============================================= */
+    .metas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+    .meta-box {
+      background: white;
+      border-radius: 10px;
+      padding: 16px 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      border-left: 4px solid #cbd5e0;
+    }
+    .meta-box.ok   { border-color: #38a169; }
+    .meta-box.warn { border-color: #d69e2e; }
+    .meta-box.bad  { border-color: #e53e3e; }
+    .meta-box .meta-label { font-size: 0.75rem; color: #718096; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+    .meta-box .meta-val   { font-size: 1.4rem; font-weight: 800; }
+    .meta-box .meta-goal  { font-size: 0.75rem; color: #a0aec0; margin-top: 2px; }
+    .meta-box.ok   .meta-val { color: #276749; }
+    .meta-box.warn .meta-val { color: #975a16; }
+    .meta-box.bad  .meta-val { color: #9b2c2c; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    .footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #a0aec0;
+      padding: 24px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    @media(max-width: 600px) {
+      .hero h1 { font-size: 1.5rem; }
+      .main-card { flex-direction: column; }
+      .glossario-item { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HERO ==================== -->
+  <div class="hero">
+    <div class="badge">Power Mídias · CS Dashboard</div>
+    <h1>Arthur Dias Implantodontista</h1>
+    <p>Central de acompanhamento do Kommo CRM — funil de vendas, metas do playbook e relatórios semanais.</p>
+    <div class="pills">
+      <span class="pill">📍 Funil de Vendas #10858199</span>
+      <span class="pill">🦷 1.739 leads na base</span>
+      <span class="pill">📅 Atualizado: 19/04/2026</span>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ==================== RECURSOS PRINCIPAIS ==================== -->
+    <div class="section-title">📂 Recursos do Projeto</div>
+
+    <!-- RELATÓRIO SEMANAL — destaque principal -->
+    <a class="main-card" href="relatorio_semanal.html">
+      <div class="icon">📊</div>
+      <div>
+        <h2>Relatório Semanal — 19/04/2026</h2>
+        <p>
+          Diagnóstico completo do funil: distribuição de leads por etapa, metas do playbook com semáforos (✅ atingido / ⚠️ próximo / 🔴 crítico),
+          prioridades de ação desta semana, rotina diária e scripts prontos para copiar.
+          <br><br>
+          <strong>Quando usar:</strong> toda semana para montar o relatório ao cliente Arthur e alinhar a equipe.
+        </p>
+        <a class="btn" href="relatorio_semanal.html">Abrir relatório →</a>
+      </div>
+    </a>
+
+    <!-- GRID DE OUTROS ARQUIVOS -->
+    <div class="grid">
+
+      <!-- DASHBOARD LOCAL -->
+      <div class="resource-card">
+        <div class="icon-sm" style="background:#fefcbf;">📈</div>
+        <h3>Dashboard Kommo</h3>
+        <p>
+          Interface interativa com filtro de período, funil por etapa, cards de resumo, tabela de leads e validação das metas em tempo real.
+          <br><br>
+          <strong>Não funciona aqui no GitHub</strong> — precisa do servidor local para buscar dados da API Kommo.
+        </p>
+        <div class="tag-list">
+          <span class="tag local">🖥️ Apenas local</span>
+          <span class="tag script">python server.py</span>
+        </div>
+      </div>
+
+      <!-- SERVER.PY -->
+      <div class="resource-card">
+        <div class="icon-sm" style="background:#e9d8fd;">⚙️</div>
+        <h3>server.py</h3>
+        <p>
+          Servidor Python leve que faz a ponte entre o navegador e a API do Kommo. Existe porque o navegador bloqueia chamadas diretas a APIs externas (política de CORS). Rode com <code style="background:#edf2f7;padding:1px 6px;border-radius:4px;font-size:0.8rem;">python server.py</code> e abra <code style="background:#edf2f7;padding:1px 6px;border-radius:4px;font-size:0.8rem;">http://localhost:8080</code>.
+        </p>
+        <div class="tag-list">
+          <span class="tag local">🖥️ Apenas local</span>
+          <span class="tag private">🔑 Lê o .env</span>
+        </div>
+      </div>
+
+      <!-- INVESTIGATE.PY -->
+      <div class="resource-card">
+        <div class="icon-sm" style="background:#e6fffa;">🔍</div>
+        <h3>investigate.py</h3>
+        <p>
+          Script de diagnóstico rápido. Busca todos os leads do Kommo e mostra a distribuição por etapa no terminal. Útil para verificar os números brutos sem abrir o dashboard.
+        </p>
+        <div class="tag-list">
+          <span class="tag local">🖥️ Apenas local</span>
+          <span class="tag script">python investigate.py</span>
+        </div>
+      </div>
+
+      <!-- .ENV -->
+      <div class="resource-card">
+        <div class="icon-sm" style="background:#fff5f5;">🔐</div>
+        <h3>.env (oculto)</h3>
+        <p>
+          Arquivo com as credenciais secretas da API Kommo (token de acesso, client_id, etc.). <strong>Nunca sobe para o GitHub</strong> — está no .gitignore por segurança. Se o token expirar, renovar em: Kommo → Configurações → Integrações.
+        </p>
+        <div class="tag-list">
+          <span class="tag private">🔒 Privado</span>
+          <span class="tag local">Ignorado pelo Git</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== COMO FUNCIONA ==================== -->
+    <div class="section-title">⚙️ Como o Projeto Funciona (passo a passo)</div>
+
+    <div style="background:white;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div class="timeline">
+
+        <div class="tl-item">
+          <h4>1. Lead entra no Kommo</h4>
+          <p>Alguém clica no anúncio do Instagram/Meta → vira um lead automaticamente no funil "Funil de Vendas" do Kommo CRM, na etapa <strong>Leads de entrada</strong>.</p>
+        </div>
+
+        <div class="tl-item">
+          <h4>2. CRC entra em contato</h4>
+          <p>A equipe CRC (Central de Relacionamento com o Cliente) liga ou manda mensagem para tentar agendar uma consulta. O lead avança de <code>Novo Lead</code> → <code>Cadência ligações</code> → <code>Follow Agendamento</code>.</p>
+        </div>
+
+        <div class="tl-item">
+          <h4>3. Lead é agendado</h4>
+          <p>Se o lead aceita, vai para <code>Agendado</code>. Se faltou na consulta, vai para <code>Follow Up No Show</code> para re-agendar.</p>
+        </div>
+
+        <div class="tl-item">
+          <h4>4. Consulta [PT] — avaliação presencial</h4>
+          <p>O paciente vai à clínica. O dentista/avaliador faz a consulta e, se tudo correr bem, passa para <code>Proposta Feita</code>.</p>
+        </div>
+
+        <div class="tl-item">
+          <h4>5. Fechamento</h4>
+          <p>Paciente aceita a proposta → <code>Ganha ✅</code>. Não aceita → <code>Perdida ❌</code>. Precisa de exames antes → <code>Controle de Exames</code>.</p>
+        </div>
+
+        <div class="tl-item">
+          <h4>6. Você (CS) acompanha tudo isso</h4>
+          <p>Roda <code>python server.py</code> localmente, acessa o dashboard, e toda semana gera um relatório para enviar ao Arthur com diagnóstico e próximos passos.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== METAS DO PLAYBOOK ==================== -->
+    <div class="section-title">🎯 Metas do Playbook (referência rápida)</div>
+
+    <div class="metas-grid">
+      <div class="meta-box bad">
+        <div class="meta-label">Leads → Agendados</div>
+        <div class="meta-val">3,7%</div>
+        <div class="meta-goal">meta: ≥ 33% · atual: crítico 🔴</div>
+      </div>
+      <div class="meta-box warn">
+        <div class="meta-label">Agendados → Consulta</div>
+        <div class="meta-val">46%</div>
+        <div class="meta-goal">meta: ≥ 50% · atual: próximo 🟡</div>
+      </div>
+      <div class="meta-box ok">
+        <div class="meta-label">Consulta → Ganha</div>
+        <div class="meta-val">50%</div>
+        <div class="meta-goal">meta: ≥ 30% · atual: atingido ✅</div>
+      </div>
+      <div class="meta-box bad">
+        <div class="meta-label">Fechamentos/mês</div>
+        <div class="meta-val">~1–2</div>
+        <div class="meta-goal">meta: ≥ 7/mês · atual: crítico 🔴</div>
+      </div>
+    </div>
+
+    <div style="background:#fffbeb;border:1.5px solid #f6e05e;border-radius:10px;padding:16px 20px;margin-top:16px;font-size:0.85rem;color:#744210;line-height:1.6;">
+      💡 <strong>O que os números dizem:</strong> o avaliador está fechando bem (50% vs meta de 30%), mas poucos leads chegam até ele. O gargalo está na CRC — taxa de agendamento de 3,7% quando deveria ser ≥ 33%. Resolver isso é a prioridade #1.
+    </div>
+
+    <!-- ==================== GLOSSÁRIO ==================== -->
+    <div class="section-title">📖 Glossário — Termos do Projeto</div>
+
+    <div style="background:white;border-radius:12px;padding:24px 28px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+
+      <div class="glossario-item">
+        <div class="termo">Kommo CRM</div>
+        <p>Software de gestão de clientes (CRM = Customer Relationship Management). É onde ficam todos os leads, tarefas e histórico de contato da clínica. Acessado em <strong>arthurdiasimplantodontista.kommo.com</strong>.</p>
+      </div>
+
+      <div class="glossario-item">
+        <div class="termo">Lead</div>
+        <p>Pessoa que demonstrou interesse (clicou no anúncio, mandou mensagem). Ainda não é paciente — é um potencial cliente que precisa ser convertido.</p>
+      </div>
+
+      <div class="glossario-item">
+        <div class="termo">Funil de vendas</div>
+        <p>Representação visual da jornada do lead: começa com muitos no topo (entrada) e vai afunilando até os poucos que fecham (ganhos). Cada etapa tem um nome e um ID numérico no Kommo.</p>
+      </div>
+
+      <div class="glossario-item">
+        <div class="termo">CRC</div>
+        <p>Central de Relacionamento com o Cliente. Equipe responsável por fazer o primeiro contato com o lead — ligações, WhatsApp — e tentar agendar a consulta.</p>
+      </div>
+
+      <div class="glossario-item">
+        <div class="termo">CS</div>
+        <p>Customer Success. Seu papel: garantir que o cliente (Arthur Dias) esteja usando o Kommo corretamente, atingindo as metas do playbook e crescendo. Você não vende — você garante o sucesso da operação.</p>
+      </div>
+
+      <div class="glossario-item">
+        <div class="termo">API do Kommo</div>
+        <p>Interface técnica que permite buscar dados do Kommo de forma automática (sem precisar abrir o site). É como uma "tomada de dados" — você conecta um script Python nela e puxa os números. Requer um token de autenticação (guardado no .env).</p>
+      </div>
+
+      <div class="glossario-item">
+        <div class="termo">Token / .env</div>
+        <p>O token é uma senha longa que autoriza seu script a acessar a API do Kommo. O arquivo .env é onde ele fica guardado localmente — nunca sobe para o GitHub para não expor a senha publicamente.</p>
+      </div>
+
+      <div class="glossario-item">
+        <div class="termo">CORS</div>
+        <p>Política de segurança do navegador que bloqueia chamadas a APIs externas feitas diretamente pelo JavaScript de uma página. Por isso existe o server.py — ele age como intermediário (proxy) entre o dashboard e a API do Kommo.</p>
+      </div>
+
+      <div class="glossario-item">
+        <div class="termo">GitHub Pages</div>
+        <p>Serviço gratuito do GitHub que publica arquivos HTML/CSS/JS como um site na internet. Só funciona com arquivos estáticos (sem servidor). Por isso o relatório funciona aqui mas o dashboard não.</p>
+      </div>
+
+      <div class="glossario-item">
+        <div class="termo">Playbook</div>
+        <p>Documento interno da Power Mídias com as regras, metas, scripts e processos que devem ser seguidos pelo CS e pela equipe do cliente. É a "bíblia" da operação.</p>
+      </div>
+
+    </div>
+
+    <!-- ==================== PRÓXIMOS PASSOS ==================== -->
+    <div class="section-title">🚀 Próximos Passos do Projeto</div>
+
+    <div style="background:white;border-radius:12px;padding:24px 28px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;background:#f0fff4;border-radius:8px;">
+          <span style="font-size:1.2rem;">⏱️</span>
+          <div>
+            <div style="font-weight:700;font-size:0.88rem;margin-bottom:3px;">Tempo até 1º contato</div>
+            <div style="font-size:0.82rem;color:#4a5568;">Medir quantas horas levam entre o lead entrar e a CRC entrar em contato. Indicador que explica sozinho 80% dos problemas de agendamento. Usar a API de eventos do Kommo.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;background:#ebf8ff;border-radius:8px;">
+          <span style="font-size:1.2rem;">⚡</span>
+          <div>
+            <div style="font-weight:700;font-size:0.88rem;margin-bottom:3px;">Cache local de dados</div>
+            <div style="font-size:0.82rem;color:#4a5568;">Salvar os leads em um arquivo JSON para o dashboard carregar em ~2s em vez de ~10s. Evita bater na API do Kommo toda vez que a página abre.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;background:#faf5ff;border-radius:8px;">
+          <span style="font-size:1.2rem;">🔔</span>
+          <div>
+            <div style="font-weight:700;font-size:0.88rem;margin-bottom:3px;">Alertas automáticos no Kommo (SalesBot)</div>
+            <div style="font-size:0.82rem;color:#4a5568;">Regra automática: se um lead novo ficar sem contato por mais de 1h, o Kommo manda alerta. Configurado direto no painel do Kommo, sem código.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;background:#fffbeb;border-radius:8px;">
+          <span style="font-size:1.2rem;">📋</span>
+          <div>
+            <div style="font-weight:700;font-size:0.88rem;margin-bottom:3px;">Vista "Leads Parados"</div>
+            <div style="font-size:0.82rem;color:#4a5568;">Seção no dashboard que agrupa leads por etapa e mostra quantos dias estão parados sem movimentação. Facilita identificar quem precisa de follow-up urgente.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <!-- ==================== FOOTER ==================== -->
+  <div class="footer">
+    Projeto CS — Power Mídias &nbsp;·&nbsp; Cliente: Arthur Dias Implantodontista &nbsp;·&nbsp;
+    <a href="https://arthurdiasimplantodontista.kommo.com" style="color:#3182ce;">Kommo CRM</a>
+    &nbsp;·&nbsp; Gerado em 19/04/2026
+  </div>
+
+</body>
+</html>
